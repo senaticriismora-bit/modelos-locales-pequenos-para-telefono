@@ -1,0 +1,17 @@
+# Android / Gradle
+.gradle/
+.kotlin/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+# IDE
+*.iml
+.idea/
+.DS_Store
+
+# Logs y temporales
+crash-buffer.log
+*.hprof

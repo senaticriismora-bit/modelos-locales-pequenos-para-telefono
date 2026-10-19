@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Descarga del modelo desde HuggingFace -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Dictado local (SpeechRecognizer) -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- AlarmClock.ACTION_SET_ALARM es un permiso normal, no peligroso -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <!-- Mantiene la CPU activa mientras el modelo genera (pantalla apagada) -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- El .gguf vive en Descargas/Bonsai para sobrevivir a reinstalar la app.
+         En Android 11+ hace falta acceso especial para leerlo por ruta (mmap).
+         En Android 10 y anteriores bastan los permisos clásicos. -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+
+    <!-- Visibilidad de paquetes (Android 11+): permite a openApp(packageName)
+         resolver el launch intent de cualquier app con launcher. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <!-- El servicio de reconocimiento de voz vive en otra app -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Bonsai">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Bonsai"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
